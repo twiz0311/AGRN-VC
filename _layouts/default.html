@@ -1,18 +1,257 @@
 <!DOCTYPE html>
-<html lang="{{ site.locale }}">
-  
-  {% include head.html %}
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
 
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    {% include head-custom.html %}
+  </head>
   <body>
-    {% include page-header.html %}
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
 
-    <section class="main-content">
-      
+    <header class="page-header" role="banner">
+      <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1>
+      <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
+      {% if site.github.is_project_page %}
+        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+      {% endif %}
+      {% if site.show_downloads %}
+        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
+        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
+      {% endif %}
+    </header>
+
+    <main id="content" class="main-content" role="main">
       {{ content }}
 
-      {% include page-footer.html %}
+        <div>
+            <a name="F2F"><h2>F2F</h2></a>
+            <hr>
+            <table>
+              <tbody>
+              <tr>
+                <td></td>
+                <td>Source</td>
+                <td>Target</td>
+                <td>AGAIN-VC</td>
+                <td>VQMIVC</td>
+                <td>ACNN-v1</td>
+                <td>ACNN-v2</td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 1</td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Source/p238_010_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Target/p294_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/AGAIN/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/VQMIVC/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v1/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v2/p238_p294_10.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 2</td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Source/p238_035_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Target/p294_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/AGAIN/p238_p294_35.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/VQMIVC/p238_p294_35.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v1/p238_p294_35.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v2/p238_p294_35.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 3</td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Source/p351_005_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Target/p305_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/AGAIN/p351_p305_05.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/VQMIVC/p351_p305_05.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v1/p351_p305_05.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v2/p351_p305_05.wav"></audio></td>
+              </tr>   
+              <tr>
+                <td nowrap width="160">sample 4</td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Source/p351_096_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/Target/p305_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/AGAIN/p351_p305_96.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/VQMIVC/p351_p305_96.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v1/p351_p305_96.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2F/ACNN_v2/p351_p305_96.wav"></audio></td>
+              </tr>
+              </tbody>
+            </table>
+      </div>
 
-    </section>
+      <div>
+            <a name="F2M"><h2>F2M</h2></a>
+            <hr>
+              <table>
+              <tbody>
+              <tr>
+                <td></td>
+                <td>Source</td>
+                <td>Target</td>
+                <td>AGAIN-VC</td>
+                <td>VQMIVC</td>
+                <td>ACNN-v1</td>
+                <td>ACNN-v2</td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 1</td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Source/p238_066_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Target/p243_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/AGAIN/p238_p243_66.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/VQMIVC/p238_p243_66.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v1/p238_p243_66.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v2/p238_p243_66.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 2</td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Source/p238_118_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Target/p243_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/AGAIN/p238_p243_118.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/VQMIVC/p238_p243_118.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v1/p238_p243_118.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v2/p238_p243_118.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 3</td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Source/p351_178_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Target/p246_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/AGAIN/p351_p246_177.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/VQMIVC/p351_p246_177.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v1/p351_p246_177.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v2/p351_p246_177.wav"></audio></td>
+              </tr>   
+              <tr>
+                <td nowrap width="160">sample 4</td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Source/p351_198_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/Target/p246_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/AGAIN/p351_p246_197.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/VQMIVC/p351_p246_197.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v1/p351_p246_197.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/F2M/ACNN_v2/p351_p246_197.wav"></audio></td>
+              </tr>
+              </tbody>
+              </table>
+      </div>
 
+      <div>
+            <a name="M2F"><h2>M2F</h2></a>
+            <hr>
+              <table>
+              <tbody>
+              <tr>
+                <td></td>
+                <td>Source</td>
+                <td>Target</td>
+                <td>AGAIN-VC</td>
+                <td>VQMIVC</td>
+                <td>ACNN-v1</td>
+                <td>ACNN-v2</td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 1</td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Source/p226_143_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Target/p305_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/AGAIN/p226_p305_138.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/VQMIVC/p226_p305_138.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v1/p226_p305_138.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v2/p226_p305_138.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 2</td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Source/p226_153_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Target/p305_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/AGAIN/p226_p305_147.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/VQMIVC/p226_p305_147.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v1/p226_p305_147.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v2/p226_p305_147.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 3</td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Source/p241_074_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Target/p294_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/AGAIN/p241_p294_69.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/VQMIVC/p241_p294_69.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v1/p241_p294_69.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v2/p241_p294_69.wav"></audio></td>
+              </tr>   
+              <tr>
+                <td nowrap width="160">sample 4</td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Source/p241_102_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/Target/p294_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/AGAIN/p241_p294_95.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/VQMIVC/p241_p294_95.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v1/p241_p294_95.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2F/ACNN_v2/p241_p294_95.wav"></audio></td>
+              </tr>
+              </tbody>
+              </table>
+      </div>
+
+      <div>
+            <a name="M2M"><h2>M2M</h2></a>
+            <hr>
+              <table>
+              <tbody>
+              <tr>
+                <td></td>
+                <td>Source</td>
+                <td>Target</td>
+                <td>AGAIN-VC</td>
+                <td>VQMIVC</td>
+                <td>ACNN-v1</td>
+                <td>ACNN-v2</td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 1</td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Source/p226_093_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Target/p246_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/AGAIN/p226_p246_89.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/VQMIVC/p226_p246_89.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v1/p226_p246_89.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v2/p226_p246_89.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 2</td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Source/p226_114_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Target/p246_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/AGAIN/p226_p246_110.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/VQMIVC/p226_p246_110.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v1/p226_p246_110.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v2/p226_p246_110.wav"></audio></td>
+              </tr>
+              <tr>
+                <td nowrap width="160">sample 3</td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Source/p241_033_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Target/p243_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/AGAIN/p241_p243_30.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/VQMIVC/p241_p243_30.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v1/p241_p243_30.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v2/p241_p243_30.wav"></audio></td>
+              </tr>   
+              <tr>
+                <td nowrap width="160">sample 4</td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Source/p241_069_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/Target/p243_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/AGAIN/p241_p243_64.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/VQMIVC/p241_p243_64.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v1/p241_p243_64.wav"></audio></td>
+                <td><audio controls="" preload="none"><source src="speech/M2M/ACNN_v2/p241_p243_64.wav"></audio></td>
+              </tr>
+              </tbody>
+              </table>
+      </div>
+      
+      <footer class="site-footer">
+        {% if site.github.is_project_page %}
+          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+        {% endif %}
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
   </body>
 </html>
