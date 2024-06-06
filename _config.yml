@@ -1,19 +1,5 @@
-# Setup
-title: AGRN-VC demo
-tagline:      A responsive theme for your project on GitHub Pages
-baseurl:      ""
-paginate:     1
-locale:       "en"
-theme: jekyll-cayman-theme
-
-# About/contact
-author:
-  name:       Author name
-  url:       https://twiz0311.github.io/AGRN-VC/
-
-# Gems
-gems:
-  - jekyll-paginate
-
-#Others
-markdown: kramdown
+title: Cayman theme
+description: Cayman is a clean, responsive theme for GitHub Pages.
+show_downloads: true
+google_analytics:
+theme: jekyll-theme-cayman
