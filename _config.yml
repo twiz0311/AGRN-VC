@@ -1,5 +1,5 @@
-title: Demo for ACNN-VC
-description: ACNN-VC Utilizing Adaptive Convolution Neural Network for One-Shot Voice Conversion
+title: Demo for AGRN-VC
+description: Utilizing Adaptive Global Response Normalization and Cluster based Pseudo Labels for Zero-Shot Voice Conversion
 show_downloads: false
 google_analytics:
 theme: jekyll-theme-cayman
