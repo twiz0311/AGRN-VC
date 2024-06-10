@@ -31,6 +31,7 @@
       {{ content }}
         <div>
             <a name="Abstract"><h2>Abstract</h2></a>
+            <hr>
             <td>Recently, there has been an increase in research on zero-shot voice conversion. Many conventional studies use dynamic layers to conduct conversion for unseen speakers. Our aim is to extend dynamic methods to content information as well. To achieve this, we propose AGRN-VC, which utilizes ConvNeXt v2 modules with adaptive global response normalization (AGRN) layers to convey content information. Also, we adopt auxiliary learning with cluster-based pseudo labels to prevent the transmission of source speaker information along with content information. This method performs a pseudo label classification task using the output of the content encoder. It helps the content encoder to focus on content information while excluding speaker information. We conduct comparative experiments between various baseline models and the proposed model using subjective and objective metrics. Our proposed approach demonstrates better converted speech quality in terms of speaker similarity and naturalness.</td>
 
         <div>
@@ -49,12 +50,12 @@
               </tr>
               <tr>
                 <td nowrap width="160">sample 1</td>
-                <td nowrap width="160"><audio controls="" preload="none"><source src="speech/F2F/Source/p238_010_mic1.flac"></audio></td>
-                <td nowrap width="160"><audio controls="" preload="none"><source src="speech/F2F/Target/p294_001_mic1.flac"></audio></td>
-                <td nowrap width="160"><audio controls="" preload="none"><source src="speech/F2F/AGAIN/p238_p294_10.wav"></audio></td>
-                <td nowrap width="160"><audio controls="" preload="none"><source src="speech/F2F/VQMIVC/p238_p294_10.wav"></audio></td>
-                <td nowrap width="160"><audio controls="" preload="none"><source src="speech/F2F/ACNN_v1/p238_p294_10.wav"></audio></td>
-                <td nowrap width="160"><audio controls="" preload="none"><source src="speech/F2F/ACNN_v2/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none" width="160"><source src="speech/F2F/Source/p238_010_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none" width="160"><source src="speech/F2F/Target/p294_001_mic1.flac"></audio></td>
+                <td><audio controls="" preload="none" width="160"><source src="speech/F2F/AGAIN/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none" width="160"><source src="speech/F2F/VQMIVC/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none" width="160"><source src="speech/F2F/ACNN_v1/p238_p294_10.wav"></audio></td>
+                <td><audio controls="" preload="none" width="160"><source src="speech/F2F/ACNN_v2/p238_p294_10.wav"></audio></td>
               </tr>
               <tr>
                 <td nowrap width="160">sample 2</td>
