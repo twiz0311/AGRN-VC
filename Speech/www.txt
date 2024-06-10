@@ -1,0 +1,224 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import math
+   
+class TimeInstanceNorm(nn.Module):
+    def __init__(self, eps=1e-5):
+        super().__init__()
+        self.eps = eps
+
+    def cal_stats(self, x):
+        
+        # B,C,T
+        b, c, t = x.shape
+        mean = x.mean(1)
+        std  = (x.var(1) + self.eps).sqrt()
+        mean = mean.view(b, 1, t) # B, 1, T
+        std  = std.view(b, 1, t)
+        
+        return mean, std
+
+    def forward(self, x, return_stats=False):
+        
+        mean, std = self.cal_stats(x)
+        x         = (x - mean) / std
+        
+        if return_stats:
+            return x, mean, std
+        else:
+            return x
+
+class InstanceNorm(nn.Module):
+    def __init__(self, eps=1e-5):
+        super().__init__()
+        self.eps = eps
+
+    def cal_stats(self, x):
+        
+        # input: B, C, T
+        mean = x.mean(-1).unsqueeze(-1)                    # B, C, 1
+        std  = (x.var(-1) + self.eps).sqrt().unsqueeze(-1) # B, C, 1
+        
+        return mean, std
+
+    def forward(self, x, return_stats=False):
+        
+        mean, std = self.cal_stats(x)
+        x         = (x - mean) / std
+
+        if return_stats:
+            return x, mean, std
+        else:
+            return x
+
+class BasicConv(nn.Module):
+
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, relu=True, bn=True, bias=False):
+        super().__init__()
+
+        self.conv = nn.Conv1d(in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, groups=groups, bias=bias)
+        self.bn   = nn.BatchNorm1d(out_channels, eps=1e-5, momentum=0.01, affine=True) if bn else None
+        self.relu = nn.ReLU() if relu else None
+
+    def forward(self, x):
+        
+        x = self.conv(x)
+        if self.bn is not None:
+            x = self.bn(x)
+        if self.relu is not None:
+            x = self.relu(x)
+            
+        return x
+    
+class EncoderBlock(nn.Module):
+    def __init__(self, c_in, c_h):
+        super().__init__()
+        
+        self.conv_block = nn.Sequential(BasicConv(c_in, c_h, kernel_size=3, stride=1, padding=1, relu=True, bn=True),
+                                        BasicConv(c_h, c_in, kernel_size=3, stride=1, padding=1, relu=False, bn=False))
+        
+    def forward(self, x):
+
+        x = x + self.conv_block(x)
+
+        return x
+
+class SelfAttention(nn.Module):
+
+    def __init__(self, input_dim):
+        super().__init__()
+        self.W = nn.Linear(input_dim, 1)
+        self.W2 = nn.Linear(input_dim, 1)
+        
+    def forward(self, x):
+
+        attn = self.W(x).squeeze(-1)
+        attn = F.softmax(attn, dim=-1).unsqueeze(-1)
+        
+        Gx = torch.norm(x, p=2, dim=1, keepdim=True)
+        Nx = Gx / (Gx.mean(dim=-1, keepdim=True) + 1e-6)
+        
+        return x*Nx*attn
+
+
+class LayerNorm(nn.Module):
+    """ LayerNorm that supports two data formats: channels_last (default) or channels_first. 
+    The ordering of the dimensions in the inputs. channels_last corresponds to inputs with 
+    shape (batch_size, height, width, channels) while channels_first corresponds to inputs 
+    with shape (batch_size, channels, height, width).
+    """
+    def __init__(self, channels, eps=1e-6, data_format="channels_last", dim=None):
+        super().__init__()
+        self.temp    = channels**0.5
+        self.inorm   = InstanceNorm()
+        self.tinorm   = TimeInstanceNorm()
+        self.w_q     = nn.Linear(channels, channels, bias=False)
+        self.w_k     = nn.Linear(channels, channels, bias=False)
+        self.w_v     = nn.Linear(channels, channels, bias=False)
+        self.softmax = nn.Softmax(dim=-1)
+        self.sa = SelfAttention(channels)
+        
+        self.eps = eps
+        self.data_format = data_format
+        if self.data_format not in ["channels_last", "channels_first"]:
+            raise NotImplementedError 
+        self.normalized_shape = (channels, )
+    
+    def forward(self, x, trg):
+        if self.data_format == "channels_last":
+            
+            x = x.transpose(1,2)
+            trg = self.sa(trg.transpose(1,2)).transpose(1,2)
+            src_q = self.w_q(self.tinorm(x).transpose(1,2)) # B, T1, C
+            trg_k = self.w_k(trg.transpose(1,2)) # B, T2, C
+            trg_v = self.w_v(trg.transpose(1,2))             # B, T2, C
+            
+            attn = torch.matmul(src_q / self.temp, trg_k.transpose(1,2))  # B, T1, T2
+            attn = self.softmax(attn)
+            
+            mean = torch.matmul(attn, trg_v)                      # B, T1, C
+            var  = F.relu(torch.matmul(attn, trg_v**2) - mean**2) # B, T1, C
+
+            mean = mean.mean(1).unsqueeze(1)            # B, 1, C
+            std  = torch.sqrt(var.mean(1)).unsqueeze(1) # B, 1, C
+            
+            output = F.layer_norm(x.transpose(1,2), self.normalized_shape)
+            
+            return std*output+mean
+            
+        elif self.data_format == "channels_first":
+            u = x.mean(1, keepdim=True)
+            s = (x - u).pow(2).mean(1, keepdim=True)
+            x = (x - u) / torch.sqrt(s + self.eps)
+            x = self.weight[:, None, None] * x + self.bias[:, None, None]
+            return x
+
+class GRN(nn.Module):
+    """ GRN (Global Response Normalization) layer
+    """
+    def __init__(self, channels):
+        super().__init__()
+        
+        self.w_b = nn.Linear(4, channels)
+        self.w_s = nn.Linear(4, channels)
+
+    def forward(self, x, src_cond):
+        Gx = torch.norm(x, p=2, dim=1, keepdim=True)
+        Nx = Gx / (Gx.mean(dim=-1, keepdim=True) + 1e-6)
+        
+        scale = self.w_s(src_cond.transpose(1,2))
+        bias = self.w_b(src_cond.transpose(1,2))
+        
+        x = scale * (x * Nx) + bias + x
+        
+        return x
+
+
+class Block(nn.Module):
+    """ ConvNeXtV2 Block.
+    
+    Args:
+        dim (int): Number of input channels.
+        drop_path (float): Stochastic depth rate. Default: 0.0
+    """
+    def __init__(self, dim):
+        super().__init__()
+        self.dwconv = nn.Conv1d(dim, dim, kernel_size=5, padding=2, groups=dim) # depthwise conv
+        self.norm = LayerNorm(dim, eps=1e-6)
+        self.pwconv1 = nn.Linear(dim, dim) # pointwise/1x1 convs, implemented with linear layers
+        self.act = nn.GELU()
+        self.grn = GRN(dim)
+        self.pwconv2 = nn.Linear(dim, dim)
+        
+    def forward(self, x, src_cond, trg):
+        residual = x
+        x = self.dwconv(x)
+        x = x.permute(0, 2, 1) # (N, C, H, W) -> (N, H, W, C)
+        x = self.norm(x, trg)
+        x = self.pwconv1(x)
+        x = self.act(x)
+        x = self.grn(x, src_cond)
+        x = self.pwconv2(x)
+        x = x.permute(0, 2, 1) # (N, H, W, C) -> (N, C, H, W)
+
+        x = residual + x
+        
+        return x
+
+    
+class DecoderBlock(nn.Module):
+    def __init__(self, c_in, c_h, c_out):
+        super().__init__()
+        
+        self.conv_block1 = Block(c_h)
+        self.conv_block2 = Block(c_h)
+        self.conv_block3 = Block(c_h)                                
+        
+    def forward(self, x, src_cond, trg):
+        
+        x = self.conv_block1(x, src_cond, trg)
+        x = self.conv_block2(x, src_cond, trg)
+        x = self.conv_block3(x, src_cond, trg)
+        
+        return x
