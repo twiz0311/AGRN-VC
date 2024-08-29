@@ -1,6 +1,0 @@
-.container-lg {
-    max-width: 1200px; /* 너비를 1200px로 늘립니다. 원하는 값으로 수정 가능 */
-    width: 100%; /* 가로축으로 가능한 최대 크기를 차지하도록 설정 */
-    padding-left: 20px;
-    padding-right: 20px;
-}
